@@ -1,9 +1,11 @@
+Copy of my CSE314 final project that I worked on with Hoang Ha, Keith Nelson, Andrew Yoo, and John Spencer. We made an app that predicts stocks using various different data wrangling and data analysis techniques. 
+
 # Project overview
 This project aims to provide stock traders meaningful insights which they can consult before making any trading decisions. The project consists of four main components:
-* Predicting stock trend with Recurrent Neural Network (Hoang)
-* Stock Sentimental Analysis (Zach & Andrew)
-* Summary Statistics & Performance Indicator (John)
-* Stock visualization and Price Prediction (Keith)
+* Predicting stock trend with Recurrent Neural Network 
+* Stock Sentimental Analysis
+* Summary Statistics & Performance Indicator
+* Stock visualization and Price Prediction
 
 All of the components above can be tested via our central Flask application. Details are below.
 
