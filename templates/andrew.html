@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block main %}
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  function cb1(selection){
+    $.getJSON({
+      url: "/positiveNegativeCallBackTest", data: {'data': selection}, success: function(result) {
+        Plotly.newPlot('chart', result, {});;
+      }
+    })
+  }
+</script>
+ <body>
+	<h3>Enter the name of a company to run Twitter Sentiment Analysis on:</h3>
+	<input name="text" id="cname" name = "cname" onchange = "cb1(this.value)" >
+	<input type="submit" >
+	
+	<p>*Enter "test" and press Submit to see a pre-scraped multi-day breakdown of sentiment for the company Game Stop*</p>
+ 
+  <div id='chart' class='chart'”></div>
+  
+
+</body>
+
+<script type='text/javascript'>
+  var graphs = {{graphJSON | safe}};
+  Plotly.plot('chart',graphs,{});
+</script>
+
+{% endblock %}

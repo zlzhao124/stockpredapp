@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+
+{% block links %}
+<link rel="stylesheet" type="text/css" href="static/css/trend_prediction.css">
+{% endblock %}
+
+{% block main %}
+	<div class="trend-section">
+		<h1> Stock Trend Prediction with Recurrent Neural Network </h1>
+
+		<form method='POST'>
+			<label> Enter a ticker to predict:
+				<input type="text" name="ticker">
+			</label>
+			<input type="submit" name="submit" value="Submit">
+		</form>
+
+		{% if result %}
+			<div class="result-display">
+				<h3> In the next 2 trading hours, the price of {{result['ticker']}} is expected to: </h3>
+				<ul>
+	                <li> <green>Increase</green> with: <strong>{{result['increase_confidence']}}%</strong> confidence. </li>
+	                <li> <red>Decrease</red> with: <strong>{{result['decrease_confidence']}}%</strong> confidence. </li>
+	                <li> <blue>Stay the same</blue> with: <strong>{{result['same_confidence']}}%</strong> confidence. </li>
+	                <p> (Note: stay the same means the change is < 0.1% of the last price) </p>
+            	</ul>
+			</div>
+		{% endif %}
+	</div>
+
+{% endblock %}

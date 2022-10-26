@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stocks Insights</title>
+    <link rel="stylesheet" type="text/css" href="static/css/index.css">
+    {% block links %}
+
+    {% endblock %}
+</head>
+<body>
+    <nav>
+        <ul>
+        	<a href="{{url_for('index')}}"> Home </a>
+            <a href="{{url_for('trend_prediction')}}"> Trend Prediction </a>
+        	<a href="{{url_for('andrew')}}"> Positive Negative Sentiment </a>
+        	<a href="{{url_for('zach')}}"> Compound Average Sentiment </a>
+        	<a href="{{url_for('keith')}}"> Trading Strategies </a>
+        	<a href="{{url_for('john')}}"> Summary Statistics </a>
+        </ul>
+    </nav>
+
+{% block main %}
+
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+green {
+	color: green;
+	font-weight: bolder;
+}
+red {
+	color: red;
+	font-weight: bolder;
+}
+blue {
+	color: blue;
+	font-weight: bolder;
+}
+
+.trend-section {
+	width: 900px;
+	margin: auto;
+	/*border: 1px solid blue;*/
+	text-align: center;
+}
+
+.result-display {
+	margin-top: 20px;
+	width: 600px
+	margin: auto;
+	border: 1px solid lightgray;
+	display: inline-block;
+	padding: 20px 30px;
+}
+

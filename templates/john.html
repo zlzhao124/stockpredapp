@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+
+{% block links %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/john.css') }}">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"
+        integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}
+
+
+{% block main %}
+
+    <div class="container">
+        <form id="form">
+            <input id="ticker" name="ticker" type="text" placeholder="enter ticker" />
+            <input id="startDate" name="startDate" type="date" />
+            <input id="endDate" name="endDate" type="date" />
+            <input type="submit" />
+        </form>
+    </div>
+
+    <script>
+        window.onload = (event) => {
+            const form = document.getElementById('form');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault()
+                let ticker = document.getElementById("ticker").value
+                let startDate = document.getElementById("startDate").value
+                let endDate = document.getElementById("endDate").value
+
+                axios.post('/data', JSON.stringify({
+                    ticker,
+                    startDate,
+                    endDate
+                }), {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(function (response) {
+                        document.getElementById("myChart") && document.getElementById("myChart").remove()
+                        document.getElementById('myStats') && document.getElementById('myStats').remove()
+
+                        let canvas = document.createElement('canvas')
+                        canvas.id = "myChart"
+                        document.getElementsByClassName("container")[0].append(canvas)
+                        const ctx = document.getElementById('myChart');
+                        const ticker = response.data["columns"][0];
+                        const xAxisLabels = response.data["index"];
+                        const temp_data = response.data["data"];
+                        let dataPoints = [];
+                        for (let i = 0; i < temp_data.length; i++) {
+                            dataPoints.push(temp_data[i][0])
+                        }
+
+                        const data = null
+                        const options = {
+                            responsive: false,
+                            maintainAspectRatio: false,
+                        }
+
+                        const myChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: xAxisLabels.map((date) => {
+                                    return new Date(date).toLocaleDateString("en-US")
+                                }),
+                                datasets: [{
+                                    label: ticker, 
+                                    data: dataPoints, 
+                                    fill: false,
+                                    borderColor: '#2196f3', 
+                                    backgroundColor: '#2196f3',
+                                    borderWidth: 1 
+                                }]
+                            },
+                            options: options
+                        });
+
+                        let statsDiv = document.createElement('div');
+                        statsDiv.id = "myStats";
+                        document.getElementsByClassName("container")[0].append(statsDiv)
+                        const stats = document.getElementById("myStats");
+
+                        const countDiv = document.createElement('div');
+                        countDiv.id = "count"
+                        countDiv.classList.add('flex-child')
+                        document.getElementById("myStats").appendChild(countDiv)
+                        countDiv.innerText = "Count: " + response.data['count']
+
+                        const twofive_per = document.createElement('div')
+                        twofive_per.id = "twofive-per"
+                        twofive_per.classList.add('flex-child')
+                        document.getElementById('myStats').appendChild(twofive_per)
+                        twofive_per.innerText = "25th Percentile: " + Math.floor(response.data['25%'])
+
+                        const fivezero_per = document.createElement('div')
+                        fivezero_per.id = "fivezero-per"
+                        fivezero_per.classList.add('flex-child')
+                        document.getElementById('myStats').appendChild(fivezero_per)
+                        fivezero_per.innerText = "50th Percentile: " + Math.floor(response.data['50%'])
+
+                        const sevenfive_per = document.createElement('div')
+                        sevenfive_per.id = "sevenfive-per"
+                        sevenfive_per.classList.add('flex-child')
+                        document.getElementById('myStats').appendChild(sevenfive_per)
+                        sevenfive_per.innerText = "75th Percentile " + Math.floor(response.data['75%'])
+
+                        const min = document.createElement('div')
+                        min.id = "min"
+                        min.classList.add('flex-child')
+                        document.getElementById('myStats').appendChild(min)
+                        min.innerText = "Minimum: " + Math.floor(response.data['min'])
+
+                        const max = document.createElement('div')
+                        max.id = "max"
+                        max.classList.add('flex-child')
+                        document.getElementById('myStats').appendChild(max)
+                        max.innerText = "Maximum: " + Math.floor(response.data['max'])
+
+                        const mean = document.createElement('div')
+                        mean.id = "mean"
+                        mean.classList.add('flex-child')
+                        document.getElementById('myStats').appendChild(mean)
+                        mean.innerText = "Mean: " + Math.floor(response.data['mean'])
+
+                        const standard_deviation = document.createElement('div')
+                        standard_deviation.id = "standard_deviation"
+                        standard_deviation.classList.add('flex-child')
+                        document.getElementById('myStats').appendChild(standard_deviation)
+                        standard_deviation.innerText = "Standard Deviation: " + Math.floor(response.data['std'])
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }, false);
+
+        }
+
+    </script>
+
+{% endblock %}
+
